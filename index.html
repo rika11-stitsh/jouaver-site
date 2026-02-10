@@ -1,220 +1,229 @@
 <!DOCTYPE html>
-<html lang="en" id="main-html">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JOUAVER | Perfume House</title>
-    <meta property="og:title" content="JOUAVER | Discover Your Signature Scent">
-    <meta property="og:description" content="Luxury perfume house. Take our quiz to find the perfect fragrance.">
-    <meta property="og:image" content="hero-image.png">
-    
+    <title>JOUAVER | Luxury Perfumes</title>
     <style>
         :root {
             --bg-color: #F5F5DC; 
             --text-black: #000000;
-            --gray-light: #D3D3D3; 
-            --pink-accent: #FFB6C1; 
+            --pink-accent: #FFB6C1; /* البينك المطلوب */
+            --white: #FFFFFF;
         }
 
         body {
             background-color: var(--bg-color);
             color: var(--text-black);
-            font-family: 'Times New Roman', Times, serif;
+            font-family: 'serif';
             margin: 0; padding: 0;
-            scroll-behavior: smooth;
+            overflow-x: hidden;
         }
 
-        /* --- Updated Hero Section for Landscape View --- */
+        /* Hero Section */
         .hero {
             width: 100%;
-            /* This ensures the poster looks good on both laptop and mobile */
             background: url('hero-image.png') no-repeat center top;
-            background-size: contain; /* Full width without cropping */
-            background-color: #000; /* Dark background if image is smaller */
-            aspect-ratio: 16 / 9; /* Typical landscape ratio */
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            background-size: contain;
+            background-color: #000;
+            aspect-ratio: 16 / 9;
+            display: flex; align-items: center; justify-content: center;
         }
 
         .hero h1 {
             font-size: clamp(2rem, 8vw, 5rem);
-            letter-spacing: 15px;
+            letter-spacing: 12px;
+            color: var(--white); /* الاسم باللون الأبيض */
             text-transform: uppercase;
-            color: #FFFFFF;
-            text-shadow: 2px 2px 20px rgba(0,0,0,0.5);
-            margin: 0;
+            text-shadow: 2px 2px 15px rgba(0,0,0,0.6);
         }
 
-        /* --- Language Switcher --- */
+        /* Language Switcher - Pink Style */
         .lang-switch {
-            position: fixed; top: 20px; right: 20px; z-index: 1000;
-            cursor: pointer; background: rgba(255, 255, 255, 0.8);
-            padding: 10px; border-radius: 50%; display: flex;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: fixed; top: 20px; right: 20px; z-index: 4000;
+            cursor: pointer; background: var(--pink-accent); 
+            padding: 12px; border-radius: 50%; display: flex;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2); border: none;
         }
-        .lang-switch svg { width: 24px; height: 24px; }
+        .lang-switch svg { fill: white; width: 24px; height: 24px; }
 
-        /* --- Quiz Section --- */
-        .quiz-section { max-width: 600px; margin: 40px auto; text-align: center; padding: 20px; }
-        .question-card { display: none; animation: fadeIn 0.5s; }
-        .question-card.active { display: block; }
-        .options-container { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 20px; }
-        .quiz-btn { background: white; border: 1px solid black; padding: 12px; cursor: pointer; transition: 0.3s; }
-        .quiz-btn:hover { background: var(--pink-accent); }
+        /* Quiz & Result - Pink touches */
+        .quiz-container { max-width: 600px; margin: 40px auto; text-align: center; padding: 20px; }
+        .quiz-btn { 
+            background: white; border: 2px solid var(--pink-accent); 
+            padding: 15px 30px; margin: 10px; cursor: pointer; 
+            font-weight: bold; border-radius: 25px; transition: 0.3s;
+        }
+        .quiz-btn:hover { background: var(--pink-accent); color: white; }
 
-        /* --- Perfume Grid --- */
+        .result-card { 
+            background: white; padding: 30px; border-radius: 20px; 
+            border: 2px solid var(--pink-accent); display: none; margin-top: 20px;
+        }
+
+        /* Perfume Grid */
         .perfume-grid {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 40px; max-width: 1100px; margin: 50px auto; padding: 20px;
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px; max-width: 1100px; margin: 50px auto; padding: 20px;
         }
-        .perfume-card { text-align: center; }
-        .perfume-slider {
-            width: 320px; height: 320px; margin: 0 auto 15px;
-            display: flex; overflow-x: auto; scroll-snap-type: x mandatory;
-            scrollbar-width: none; border-radius: 8px; border: 1px solid var(--gray-light);
+        .perfume-card { text-align: center; cursor: pointer; background: white; padding: 15px; border-radius: 15px; }
+        .perfume-card img { width: 100%; border-radius: 10px; }
+
+        /* Full Details Page */
+        #details-page {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--bg-color); z-index: 5000; overflow-y: auto; padding-bottom: 50px;
         }
-        .perfume-slider img { width: 320px; height: 320px; object-fit: cover; flex-shrink: 0; scroll-snap-align: start; }
+        .details-content { max-width: 800px; margin: 0 auto; padding: 20px; text-align: center; }
+        .back-link { cursor: pointer; color: var(--pink-accent); font-weight: bold; display: block; margin: 20px 0; }
         
-        .perfume-name { font-size: 1.5rem; font-weight: bold; margin: 10px 0; letter-spacing: 2px; }
-        .storytelling { font-style: italic; font-size: 0.9rem; padding: 0 10px; min-height: 80px; }
-        .cart-btn { background: var(--pink-accent); color: white; border: none; padding: 12px 30px; border-radius: 20px; cursor: pointer; font-weight: bold; }
+        .details-imgs { display: flex; gap: 10px; overflow-x: auto; margin-bottom: 20px; padding: 10px; justify-content: center; }
+        .details-imgs img { width: 300px; height: 300px; object-fit: cover; border-radius: 15px; border: 1px solid #ddd; }
 
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        body.rtl { direction: rtl; }
-
-        @media (max-width: 768px) {
-            .hero { aspect-ratio: 4 / 3; } /* Adjusting for taller mobile screens */
-            .options-container { grid-template-columns: 1fr; }
+        .price-tag { font-size: 1.8rem; font-weight: bold; margin: 10px 0; display: block; }
+        
+        /* Fixed Cart Button */
+        .cart-btn-large { 
+            background: var(--pink-accent); color: white; border: none; 
+            padding: 20px 60px; border-radius: 50px; font-size: 1.3rem; 
+            font-weight: bold; cursor: pointer; margin: 20px 0;
+            box-shadow: 0 8px 20px rgba(255, 182, 193, 0.4);
+            display: inline-block; width: auto; min-width: 250px;
         }
+
+        .story-section { 
+            background: white; padding: 25px; border-radius: 15px; 
+            line-height: 1.8; text-align: justify; margin-top: 30px;
+            border-bottom: 4px solid var(--pink-accent);
+        }
+
+        body.rtl { direction: rtl; }
     </style>
 </head>
 <body>
 
-    <div class="lang-switch" onclick="toggleLang()">
+    <button class="lang-switch" onclick="toggleLang()">
         <svg viewBox="0 0 24 24"><path d="M12,2C6.48,2,2,6.48,2,12s4.48,10,10,10s10-4.48,10-10S17.52,2,12,2z M11,19.93C7.05,19.44,4,16.08,4,12 c0-0.35,0.02-0.69,0.07-1.02L9,16v3c0,1.1,0.9,2,2,2V19.93z M17.9,17.39C17.64,16.58,16.9,16,16,16h-1v-3c0-0.55-0.45-1-1-1h-6v-2h2 c0.55,0,1-0.45,1-1V7h2c1.1,0,2-0.9,2-2V4.59C17.89,6.18,20,8.85,20,12C20,14.09,19.2,16,17.9,17.39z"/></svg>
+    </button>
+
+    <div id="main-site">
+        <section class="hero"><h1>JOUAVER</h1></section>
+
+        <div class="quiz-container" id="quiz-ui">
+            <h2 id="q-title" style="color:var(--pink-accent)">Who is this for?</h2>
+            <div id="q-options">
+                <button class="quiz-btn" onclick="runQuiz('HER')">HER</button>
+                <button class="quiz-btn" onclick="runQuiz('HIM')">HIM</button>
+            </div>
+            <div class="result-card" id="res-card">
+                <h3 id="res-label" style="color:var(--pink-accent)"></h3>
+                <h1 id="res-name" style="cursor:pointer; text-decoration:underline;"></h1>
+            </div>
+        </div>
+
+        <div class="perfume-grid" id="grid"></div>
     </div>
 
-    <section class="hero">
-        <h1>JOUAVER</h1>
-    </section>
-
-    <section class="quiz-section">
-        <div id="quiz-container">
+    <div id="details-page">
+        <div class="details-content">
+            <span class="back-link" onclick="closeDetails()" id="back-btn">← Back to shop</span>
+            <div class="details-imgs">
+                <img id="img1" src=""><img id="img2" src="">
             </div>
-        <div id="result-card" class="question-card">
-            <h2 id="res-heading"></h2>
-            <h1 id="res-name" style="color: var(--pink-accent);"></h1>
-            <button class="quiz-btn" onclick="location.reload()" id="btn-reset">Take Quiz Again</button>
+            <h1 id="det-name"></h1>
+            <span class="price-tag">780 EGP</span>
+            <button class="cart-btn-large" id="cart-txt">ADD TO CART 🛒</button>
+            <div class="story-section">
+                <p id="det-story"></p>
+            </div>
         </div>
-    </section>
-
-    <div class="perfume-grid" id="perfume-container"></div>
+    </div>
 
     <script>
-        let currentLang = 'en';
-        let userChoices = { gender: '', style: '' };
-
-        const translations = {
+        let lang = 'en';
+        const data = {
             en: {
-                cart: "ADD TO CART 🛒", reset: "Take Quiz Again", res_h: "Recommended for you:",
+                cart: "ADD TO CART 🛒", back: "← Back to shop", res: "Your Signature Scent:",
                 perfumes: [
-                    { name: "VPERLE", story: "Soft, feminine, and delicate energy. Anyone who comes near can feel your pure, girly energy.", img: "vperle" },
-                    { name: "LAVENE", story: "Sweet like sugary treats. You are calm, confident, smart, and clever.", img: "lavene" },
-                    { name: "VAMOR", story: "Red dress energy. Calm, confident, and strong without trying. Treated like a queen.", img: "vamor" },
-                    { name: "PRESTIGE", story: "Modern oud refined by elegance. Calm, sure of himself, strong without trying.", img: "prestige" },
-                    { name: "ECHO", story: "Strong, playful, and magnetic. A man you won't forget with a presence that speaks.", img: "echo" },
-                    { name: "BELLE ÂME", story: "Fresh, energetic, and vibrant. Perfect for university and an active lifestyle.", img: "belleame" }
+                    { name: "VPERLE", img: "vperle", story: "It's 8:00 PM. You've just stepped out of the shower, wearing VPERLE, your scent is soft, feminine, and delicate, anyone who comes near can feel your pure, girly energy, you handle everything with calm and softness, and your love for pink shows in your tender style." },
+                    { name: "LAVENE", img: "lavene", story: "In the morning, you leave your house wearing LAVENE, Your scent is sweet, like sugary treats, soft and feminine, you are calm, confident, smart, and clever. You speak with confidence, soft and feminine and anyone who smells your scent knows you are here, you love to work, learn more, and explore the world." },
+                    { name: "VAMOR", img: "vamor", story: "It's late evening. She steps out to meet him, wearing a red dress. She is calm, confident, and strong without trying. She's on a date, and he looks at her like a man who knows he's lucky. She knows who she is. She walks softly, speaks clearly, and is treated like the queen she is. She doesn't ask for attention. She deserves it." },
+                    { name: "PRESTIGE", img: "prestige", story: "It's early morning. He gets ready for work quietly, dressed smart, focused, and in control. He gets into his Porsche and drives to the office. The room changes when he enters not because he talks loud, but because people notice him. He listens more than he speaks, and when he talks, people pay attention. Calm, sure of himself, strong without trying. He doesn't ask for respect. It comes to him." },
+                    { name: "ÉCHO", img: "echo", story: "He's young, strong, and confident. After a long day, he goes to the gym, plays some basketball, and works hard. In the evening, he dresses smart for a formal dinner. Calm, mysterious, and naturally attractive, he walks into the room. Everyone notices him, especially the women. He doesn't need to impress anyone his presence does it for him. Strong, playful, and magnetic, he's a man you won't forget." },
+                    { name: "BELLE ÂME", img: "belleame", story: "It's a bright summer morning and you're getting ready for university. You put on BELLE ÂME and instantly feel fresh, energetic, and ready for the day. every step you take feels vibrant and full of confidence. Classes go smoothly, and after university, you hit the gym and your scent stays nice all day. By the evening, your day is perfectly balanced productive, active, and you still feel confident and lively." }
                 ]
             },
             ar: {
-                cart: "أضف إلى السلة 🛒", reset: "إعادة الاختبار", res_h: "العطر المفضل لك:",
+                cart: "أضف إلى السلة 🛒", back: "← العودة للمتجر", res: "عطرك المفضل هو:",
                 perfumes: [
-                    { name: "VPERLE", story: "طاقة أنثوية ناعمة ورقيقة. يشعر الجميع برقتك وهدوئك.", img: "vperle" },
-                    { name: "LAVENE", story: "حلوة كالسكاكر. أنتِ هادئة، واثقة، وذكية.", img: "lavene" },
-                    { name: "VAMOR", story: "طاقة الفستان الأحمر. واثقة وقوية وتستحق كل الاهتمام كالملكة.", img: "vamor" },
-                    { name: "PRESTIGE", story: "عود عصري بأناقة باريسية. هادئ، واثق من نفسه، وقوي دون عناء.", img: "prestige" },
-                    { name: "ECHO", story: "قوي، جذاب، ومغناطيسي. رجل لا يُنسى وحضوره يطغى على المكان.", img: "belleame" }, // Fixed mapping
-                    { name: "BELLE ÂME", story: "منعش، مفعم بالطاقة والحيوية. مثالي للجامعة والنشاط اليومي.", img: "belleame" }
+                    { name: "VPERLE", img: "vperle", story: "الساعة 8:00 مساءً. خرجتِ للتو من الاستحمام بعبير VPERLE؛ رائحتك ناعمة، أنثوية ورقيقة. يشعر كل من يقترب منك بطاقتك الأنثوية النقية. تتعاملين مع كل شيء بهدوء ونعومة، ويظهر حبك للون الوردي في أسلوبك الرقيق." },
+                    { name: "LAVENE", img: "lavene", story: "في الصباح، تخرجين من منزلك بعبير LAVENE. رائحتك حلوة مثل السكاكر، ناعمة وأنثوية. أنتِ هادئة، واثقة، وذكية. تتحدثين بثقة، وكل من يشم عطرك يعرف أنكِ هنا؛ تحبين العمل، التعلم، واستكشاف العالم." },
+                    { name: "VAMOR", img: "vamor", story: "في وقت متأخر من المساء، تخرج للقائه بفستان أحمر. هي هادئة، واثقة، وقوية دون عناء. في موعدها، ينظر إليها كرجل يعرف أنه محظوظ. هي تعرف من هي، تمشي بنعومة وتتحدث بوضوح، وتُعامل كالملكة التي هي عليها. هي لا تطلب الاهتمام؛ بل تستحقه." },
+                    { name: "PRESTIGE", img: "prestige", story: "في الصباح الباكر، يستعد للعمل بهدوء، يرتدي ملابس أنيقة، مركز ومسيطر. يركب سيارته البورش ويتوجه للمكتب. تتغير أجواء الغرفة عند دخوله؛ ليس لأنه يتحدث بصوت عالٍ، بل لأن الناس يلاحظونه. يستمع أكثر مما يتكلم. هادئ، واثق من نفسه، وقوي دون عناء. لا يطلب الاحترام؛ بل يأتيه طواعية." },
+                    { name: "ÉCHO", img: "echo", story: "هو شاب، قوي، وواثق. بعد يوم طويل، يذهب للنادي ويعمل بجد. في المساء، يرتدي ملابس رسمية لعشاء فاخر. هادئ، غامض وجذاب بطبيعته. يلاحظه الجميع، خاصة النساء. قوي، مرح ومغناطيسي؛ هو رجل لن تنساه أبداً." },
+                    { name: "BELLE ÂME", img: "belleame", story: "صباح صيفي مشرق وأنتِ تستعدين للجامعة. تضعين BELLE ÂME وتشعرين فوراً بالانتعاش والطاقة. كل خطوة تخطينها مفعمة بالحيوية والثقة. تمر المحاضرات بسلاسة، تذهبين للنادي، وتظل رائحتك جميلة طوال اليوم. تشعرين بالإنتاجية والنشاط." }
                 ]
             }
         };
 
-        function renderPerfumes() {
-            const container = document.getElementById('perfume-container');
-            container.innerHTML = translations[currentLang].perfumes.map(p => `
-                <div class="perfume-card">
-                    <div class="perfume-slider">
-                        <img src="${p.img}-bottle.jpg" alt="${p.name}">
-                        <img src="${p.img}-notes.jpg" alt="${p.name} Notes">
-                    </div>
-                    <div class="perfume-name">${p.name}</div>
-                    <p class="storytelling">${p.story}</p>
-                    <div class="price">780 EGP</div>
-                    <button class="cart-btn">${translations[currentLang].cart}</button>
+        function render() {
+            const g = document.getElementById('grid');
+            g.innerHTML = data[lang].perfumes.map(p => `
+                <div class="perfume-card" onclick="openDetails('${p.name}')">
+                    <img src="${p.img}-bottle.jpg">
+                    <h3>${p.name}</h3>
+                    <p style="color:var(--pink-accent)">780 EGP</p>
                 </div>
             `).join('');
         }
 
-        // Simple Quiz Logic for 8 Questions (Simplified for UX)
-        function startQuiz() {
-            const container = document.getElementById('quiz-container');
-            container.innerHTML = `
-                <div id="q1" class="question-card active">
-                    <h2>${currentLang === 'en' ? 'Who is this for?' : 'لمن هذا العطر؟'}</h2>
-                    <div class="options-container">
-                        <button class="quiz-btn" onclick="setGender('HER')">${currentLang === 'en' ? 'HER' : 'لها'}</button>
-                        <button class="quiz-btn" onclick="setGender('HIM')">${currentLang === 'en' ? 'HIM' : 'له'}</button>
-                    </div>
-                </div>
-            `;
+        function runQuiz(gender) {
+            const opt = document.getElementById('q-options');
+            const title = document.getElementById('q-title');
+            title.innerText = (gender === 'HER') ? "Describe your vibe:" : "Describe your style:";
+            const choices = (gender === 'HER') ? ['Soft', 'Elegant', 'Bold'] : ['Clean', 'Confident', 'Mysterious'];
+            opt.innerHTML = choices.map(c => `<button class="quiz-btn" onclick="showRes('${c}')">${c}</button>`).join('');
         }
 
-        function setGender(g) {
-            userChoices.gender = g;
-            const title = g === 'HER' ? (currentLang === 'en' ? 'Describe yourself' : 'صفي نفسك') : (currentLang === 'en' ? 'Describe your style' : 'صف أسلوبك');
-            const opts = g === 'HER' ? 
-                ['Soft & Feminine', 'Elegant & Classy', 'Romantic', 'Bold & Attractive'] : 
-                ['Clean & Classy', 'Confident', 'Strong', 'Mysterious'];
-            
-            document.getElementById('q1').classList.remove('active');
-            const container = document.getElementById('quiz-container');
-            container.innerHTML = `
-                <div class="question-card active">
-                    <h2>${title}</h2>
-                    <div class="options-container">
-                        ${opts.map(o => `<button class="quiz-btn" onclick="showResult('${o}')">${o}</button>`).join('')}
-                    </div>
-                </div>
-            `;
+        function showRes(c) {
+            document.getElementById('q-options').style.display = 'none';
+            document.getElementById('q-title').style.display = 'none';
+            const card = document.getElementById('res-card');
+            card.style.display = 'block';
+            document.getElementById('res-label').innerText = data[lang].res;
+            let n = "VPERLE"; 
+            if(c === 'Elegant') n = "LAVENE"; if(c === 'Bold') n = "VAMOR";
+            if(c === 'Clean') n = "PRESTIGE"; if(c === 'Mysterious') n = "ÉCHO";
+            const nameEl = document.getElementById('res-name');
+            nameEl.innerText = n;
+            nameEl.onclick = () => openDetails(n);
         }
 
-        function showResult(choice) {
-            document.getElementById('quiz-container').innerHTML = '';
-            document.getElementById('result-card').classList.add('active');
-            document.getElementById('res-heading').innerText = translations[currentLang].res_h;
-            document.getElementById('btn-reset').innerText = translations[currentLang].reset;
-            
-            [span_10](start_span)[span_11](start_span)// Logic based on PDF[span_10](end_span)[span_11](end_span)
-            let result = "BELLE ÂME";
-            if(choice === 'Soft & Feminine') result = "VPERLE";
-            if(choice === 'Elegant & Classy') result = "LAVENE";
-            if(choice === 'Bold & Attractive') result = "VAMOR";
-            if(choice === 'Clean & Classy') result = "PRESTIGE";
-            if(choice === 'Mysterious') result = "ECHO";
-            
-            document.getElementById('res-name').innerText = result;
+        function openDetails(name) {
+            const p = data[lang].perfumes.find(x => x.name === name || (x.name === "ÉCHO" && name === "ECHO"));
+            document.getElementById('img1').src = p.img + "-bottle.jpg";
+            document.getElementById('img2').src = p.img + "-notes.jpg";
+            document.getElementById('det-name').innerText = p.name;
+            document.getElementById('det-story').innerText = p.story;
+            document.getElementById('back-btn').innerText = data[lang].back;
+            document.getElementById('cart-txt').innerText = data[lang].cart;
+            document.getElementById('main-site').style.display = 'none';
+            document.getElementById('details-page').style.display = 'block';
+            window.scrollTo(0,0);
+        }
+
+        function closeDetails() {
+            document.getElementById('details-page').style.display = 'none';
+            document.getElementById('main-site').style.display = 'block';
         }
 
         function toggleLang() {
-            currentLang = currentLang === 'en' ? 'ar' : 'en';
-            document.body.classList.toggle('rtl', currentLang === 'ar');
-            renderPerfumes();
-            startQuiz();
+            lang = (lang === 'en') ? 'ar' : 'en';
+            document.body.classList.toggle('rtl', lang === 'ar');
+            render(); location.reload(); // لإعادة ضبط الاختبار
         }
 
-        renderPerfumes();
-        startQuiz();
+        render();
     </script>
 </body>
 </html>
